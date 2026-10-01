@@ -21,6 +21,9 @@ import { WaveformVisualizer } from './components/WaveformVisualizer';
 import { CentralControlButton } from './components/CentralControlButton';
 import { ToolActionModal } from './components/ToolActionModal';
 import { VibeSelector } from './components/VibeSelector';
+import { AndroidAPKModal } from './components/AndroidAPKModal';
+import { PWAInstallHeaderButton } from './components/PWAInstallHeaderButton';
+import { OfflineIndicator } from './components/OfflineIndicator';
 import {
   SessionState,
   SassLevel,
@@ -64,8 +67,9 @@ export default function App() {
   // Tool Call Active Modal
   const [activeToolCall, setActiveToolCall] = useState<ToolCallData | null>(null);
 
-  // Settings Sheet
+  // Settings Sheet & APK Modal
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isAPKModalOpen, setIsAPKModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // References
@@ -409,6 +413,12 @@ export default function App() {
 
         {/* Live Status Pill & Quick Language Toggle & Settings Toggle */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Android APK / App Install Button */}
+          <PWAInstallHeaderButton
+            onOpenModal={() => setIsAPKModalOpen(true)}
+            language={language}
+          />
+
           {/* Video Call Button */}
           <button
             onClick={handleStartVideoCall}
@@ -655,6 +665,16 @@ export default function App() {
           />
         )}
       </AnimatePresence>
+
+      {/* Android APK & PWA Install Modal */}
+      <AndroidAPKModal
+        isOpen={isAPKModalOpen}
+        onClose={() => setIsAPKModalOpen(false)}
+        language={language}
+      />
+
+      {/* Offline Connectivity Toast */}
+      <OfflineIndicator />
     </div>
   );
 }
